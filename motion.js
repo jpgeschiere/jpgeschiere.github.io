@@ -1,3 +1,11 @@
+// Use canonical directory URLs to avoid cached redirects on extensionless routes.
+document.querySelectorAll('a[href]').forEach(a=>{
+  const u=new URL(a.getAttribute('href'),location.href);
+  if(u.origin===location.origin && /^\/(en|nl)(\/[^/.]+)?$/.test(u.pathname)){
+    u.pathname+='/';
+    a.href=u.pathname+u.search+u.hash;
+  }
+});
 const reduce=matchMedia('(prefers-reduced-motion: reduce)');
 function syncMotion(){document.documentElement.classList.toggle('paused',reduce.matches)}
 syncMotion();reduce.addEventListener('change',syncMotion);
